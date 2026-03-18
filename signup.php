@@ -11,26 +11,38 @@
         <fieldset>
             <legend>Personal details</legend>
             
-            <label for="firstName">First Name:</label><br>
-            <input type="text" name="firstName" id="firstName"><br>
-
-            <label for="lastName">Last Name:</label><br>
-            <input type="text" name="lastName" id="lastName"><br>
+            <div class="names">
+                <div class="cont">
+                    <label for="firstName">First Name:</label>
+                    <input type="text" name="firstName" id="firstName"><br>
+                </div>
+                
+                <div class="cont">
+                    <label for="lastName">Last Name:</label>
+                    <input type="text" name="lastName" id="lastName"><br>
+                </div>
+            </div>
 
             <label for="email">Email:</label><br>
-            <input type="email" name="email" id="email"><br>
+            <input type="email" name="email" id="email"><br><br>
 
             <label for="password">Password:</label><br>
-            <input type="password" name="password" id="password"><br>
+            <input type="password" name="password" id="password"><br><br>
 
             <p>Gender:</p>
-            <input type="radio" name="gender" id="male" value="male" required>
-            <label for="male">Male</label>
             
-            <input type="radio" name="gender" id="female" value="female">
-            <label for="female">Female</label><br><br>
+            <div class="radio">
+                <div class="male">
+                    <input type="radio" name="gender" id="male" value="male" required>
+                    <label for="male">Male</label>
+                </div>
+                <div class="female">
+                    <input type="radio" name="gender" id="female" value="female">
+                    <label for="female">Female</label><br><br>
+                </div>
+            </div>
 
-            <div style="display: flex; flex-direction: row; gap: 5px">
+            <div class="submit">
                 <input type="submit" name="submit" id="submit" value="Submit">
                 <a href="login.php">Login instead</a>
             </div>
