@@ -13,5 +13,7 @@
                     $passWord,
                     $dbName);
 
-    if(!$conn) echo "Not connected!";
+    if($conn->connect_error){
+        die("Connection failed!");
+    }
     
