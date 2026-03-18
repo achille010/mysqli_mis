@@ -30,7 +30,10 @@
             <input type="radio" name="gender" id="female" value="female">
             <label for="female">Female</label><br><br>
 
-            <input type="submit" name="submit" id="submit" value="Submit">
+            <div style="display: flex; flex-direction: row; gap: 5px">
+                <input type="submit" name="submit" id="submit" value="Submit">
+                <a href="login.php">Login instead</a>
+            </div>
         </fieldset>
     </form>
 </body>
