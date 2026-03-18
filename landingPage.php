@@ -1,6 +1,6 @@
 <?php
 session_start();
-if(!isset($_SESSION['user_email'])){
+if (!isset($_SESSION['user_email'])) {
     header("Location: login.php");
     exit();
 }
@@ -15,22 +15,26 @@ $stmt->bind_param('s', $email);
 $stmt->execute();
 $res = $stmt->get_result();
 
-if($row = $res->fetch_assoc()){
+if ($row = $res->fetch_assoc()) {
     $fname = $row['fname'];
     $lname = $row['lname'];
-}
+
+    $fullname = $fname . " " . $lname;
+    }
 ?>
 <!DOCTYPE html>
 <html>
+
 <head>
     <link rel="stylesheet" href="style.css">
     <title>Dashboard</title>
 </head>
+
 <body>
 
     <div class="panel">
         <label>Account Active</label>
-        <h1><?php echo htmlspecialchars($fname . " " . $lname); ?></h1>
+        <h1><?php echo htmlspecialchars($fullname); ?></h1>
         <span class="user-email"><?php echo htmlspecialchars($email); ?></span>
 
         <p style="margin-bottom: 30px; line-height: 1.6; color: #94a3b8;">
@@ -44,4 +48,5 @@ if($row = $res->fetch_assoc()){
     </div>
 
 </body>
+
 </html>
