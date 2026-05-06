@@ -2,32 +2,36 @@
 session_start();
 include "../server/connections.php";
 
-if (!isset($_SESSION['user_email']) || $_SESSION['user_email'] !== 'adminOfMIS2026@gmail.com') {
+if (!isset($_SESSION['user_email'])) {
     header("Location: login.php");
     exit();
 }
 
+$email = $_SESSION['user_email'];
 $msg = "";
-if (isset($_GET['id'])) {
-    $id = $_GET['id'];
-    $stmt = $conn->prepare("SELECT * FROM members WHERE id = ?");
-    $stmt->bind_param("i", $id);
-    $stmt->execute();
-    $user = $stmt->get_result()->fetch_assoc();
+
+$stmt = $conn->prepare("SELECT * FROM members WHERE email = ?");
+$stmt->bind_param("s", $email);
+$stmt->execute();
+$user = $stmt->get_result()->fetch_assoc();
+
+if (!$user) {
+    die("User not found.");
 }
 
 if (isset($_POST['update'])) {
     $id = $_POST['id'];
     $fname = $_POST['fname'];
     $lname = $_POST['lname'];
-    $email = $_POST['email'];
+    $new_email = $_POST['email'];
     $gender = $_POST['gender'];
 
     $stmt = $conn->prepare("UPDATE members SET fname=?, lname=?, email=?, gender=? WHERE id=?");
-    $stmt->bind_param("ssssi", $fname, $lname, $email, $gender, $id);
+    $stmt->bind_param("ssssi", $fname, $lname, $new_email, $gender, $id);
 
     if ($stmt->execute()) {
-        header("Location: SecureAdminPage.php?msg=Member Updated Successfully");
+        $_SESSION['user_email'] = $new_email;
+        header("Location: landingPage.php?msg=Profile Updated Successfully");
         exit();
     } else {
         $msg = "Error updating record: " . $conn->error;
@@ -41,7 +45,7 @@ if (isset($_POST['update'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Member | Admin Panel</title>
+    <title>Edit Profile | Member Portal</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -49,53 +53,52 @@ if (isset($_POST['update'])) {
     <div class="container" style="max-width: 600px;">
         <header class="nav-header">
             <h1><div class="logo-icon"><img src="assets/logo.png" alt="Edumate Logo"></div> Edumate</h1>
-
-            <a href="SecureAdminPage.php" class="btn btn-ghost" style="font-size: 0.8125rem;">&larr; Back to List</a>
+            <a href="landingPage.php" class="btn btn-ghost" style="font-size: 0.8125rem;">&larr; Back to Home</a>
         </header>
 
         <div style="border: 1px solid var(--border); border-radius: var(--radius-md); padding: 32px; background: white;">
             <?php if ($msg): ?>
                 <div class="badge badge-danger" style="width: 100%; justify-content: center; padding: 12px; margin-bottom: 24px;">
-                    <?php echo $msg; ?>
+                    <?= $msg ?>
                 </div>
-            <?php endif; ?>
+            <?php endif ?>
 
-            <form method="POST">
-                <input type="hidden" name="id" value="<?php echo $user['id']; ?>">
-
+            <form method="post">
+                <input type="hidden" name="id" value="<?= $user['id'] ?>">
+                
                 <div style="display: flex; gap: 12px; margin-bottom: 24px;">
                     <div style="flex: 1;">
                         <label for="fname">First Name</label>
-                        <input type="text" id="fname" name="fname" value="<?php echo htmlspecialchars($user['fname']); ?>" required>
+                        <input type="text" name="fname" id="fname" value="<?= htmlspecialchars($user['fname']) ?>" required>
                     </div>
                     <div style="flex: 1;">
                         <label for="lname">Last Name</label>
-                        <input type="text" id="lname" name="lname" value="<?php echo htmlspecialchars($user['lname']); ?>" required>
+                        <input type="text" name="lname" id="lname" value="<?= htmlspecialchars($user['lname']) ?>" required>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="email">Email Address</label>
-                    <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($user['email']); ?>" required>
+                    <input type="email" name="email" id="email" value="<?= htmlspecialchars($user['email']) ?>" required>
                 </div>
 
                 <div class="form-group">
                     <label>Gender</label>
                     <div style="display: flex; gap: 12px; margin-top: 12px;">
                         <label class="btn btn-ghost" style="flex: 1; font-weight: 400; cursor: pointer;">
-                            <input type="radio" name="gender" value="Male" <?php echo ($user['gender'] == 'Male' ? 'checked' : ''); ?> required style="width: auto; margin-right: 8px;">
+                            <input type="radio" name="gender" value="Male" <?= ($user['gender'] == 'Male' ? 'checked' : '') ?> required style="width: auto; margin-right: 8px;">
                             Male
                         </label>
                         <label class="btn btn-ghost" style="flex: 1; font-weight: 400; cursor: pointer;">
-                            <input type="radio" name="gender" value="Female" <?php echo ($user['gender'] == 'Female' ? 'checked' : ''); ?> style="width: auto; margin-right: 8px;">
+                            <input type="radio" name="gender" value="Female" <?= ($user['gender'] == 'Female' ? 'checked' : '') ?> style="width: auto; margin-right: 8px;">
                             Female
                         </label>
                     </div>
                 </div>
 
                 <div style="display: flex; gap: 12px; margin-top: 32px;">
-                    <button type="submit" name="update" class="btn btn-primary" style="flex: 2; padding: 10px;">Update Member</button>
-                    <a href="SecureAdminPage.php" class="btn btn-ghost" style="flex: 1; padding: 10px; text-align: center;">Cancel</a>
+                    <button type="submit" name="update" class="btn btn-primary" style="flex: 2; padding: 10px;">Save Changes</button>
+                    <a href="landingPage.php" class="btn btn-ghost" style="flex: 1; padding: 10px; text-align: center;">Cancel</a>
                 </div>
             </form>
         </div>

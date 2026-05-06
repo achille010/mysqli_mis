@@ -3,7 +3,6 @@ session_start();
 include "connections.php";
 
 if (isset($_POST["submit"])) {
-
     $email = $_POST["email"];
     $inputPassword = $_POST["password"];
 
@@ -27,16 +26,12 @@ if (isset($_POST["submit"])) {
                 exit();
             }
         } else {
-            echo "Invalid email or password!<br>";
-            echo "<pre style='display: inline;'>&nbsp;</pre><a href='../client/login.php'>Login</a>";
-            echo "<pre style='display: inline;'>&Tab;&Tab;</pre>";
-            echo "<a href='../client/signup.php'>Signup</a>";
+            header("Location: ../client/login.php?error=Invalid credentials");
+            exit();
         }
     } else {
-        echo "Invalid email or password!<br>";
-        echo "&nbsp;&nbsp;&nbsp;<a href='../client/login.php'>Login</a>";
-        echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-        echo "<a href='../client/signup.php'>Signup</a>";
+        header("Location: ../client/login.php?error=Invalid credentials");
+        exit();
     }
 
     $stmt->close();
