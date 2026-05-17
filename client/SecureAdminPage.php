@@ -41,13 +41,7 @@ $result = $conn->query($sql);
                 <p class="stat-label">Total Members</p>
                 <h3 class="stat-value"><?php echo $result->num_rows; ?></h3>
             </div>
-            <div class="stat-item">
-                <p class="stat-label">System Status</p>
-                <h3 class="stat-value" style="color: var(--success); display: flex; align-items: center; gap: 8px;">
-                    <span class="status-online"></span>
-                    Active
-                </h3>
-            </div>
+            
             <div class="stat-item">
                 <p class="stat-label">Pending</p>
                 <h3 class="stat-value">0</h3>

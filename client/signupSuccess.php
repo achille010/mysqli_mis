@@ -18,9 +18,9 @@
             <h1 style="margin-bottom: 8px; font-size: 1.5rem;">Account created</h1>
             <p style="color: var(--text-muted); margin-bottom: 32px; font-size: 0.875rem;">Redirecting to the login page shortly...</p>
             
-            <div class="status-online" style="justify-content: center;">
+            <!-- <div class="status-online" style="justify-content: center;">
                 Active
-            </div>
+            </div> -->
             
             <div style="margin-top: 40px;">
                 <a href="login.php" class="btn btn-primary" style="width: 100%; padding: 10px;">Go to Login</a>
